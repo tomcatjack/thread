@@ -2,7 +2,6 @@ package com.wei.thread.callableandfuture;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,12 +15,9 @@ public class CallableAndFuturec {
         }
         ExecutorService threadPool = Executors.newFixedThreadPool  (20);
         List<Future> tasks = new ArrayList<>();
-        list.forEach(l ->{
-            tasks.add(threadPool.submit(new Callable<Object>() {
-                public String call() throws Exception {
-                    return Thread.currentThread().getName()+">>>"+new Random().nextInt(100);
-                }
-            }));
+        list.forEach( l ->{
+            PushProcess pushProcess = new PushProcess(l);
+            tasks.add( threadPool.submit(pushProcess));
         });
         tasks.forEach(future -> {
             try {
@@ -31,5 +27,23 @@ public class CallableAndFuturec {
                 future.cancel(true);
             }
         });
+    }
+
+    public static class PushProcess implements Callable<Integer>{
+
+        private Integer i;
+
+        public PushProcess(Integer i) {
+            this.i = i;
+        }
+
+        @Override
+        public Integer call() throws Exception {
+           if(i%2==0){
+               return i;
+           }else{
+               return 1000;
+           }
+        }
     }
 }
