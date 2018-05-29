@@ -29,21 +29,4 @@ public class CallableAndFuturec {
         });
     }
 
-    public static class PushProcess implements Callable<Integer>{
-
-        private Integer i;
-
-        public PushProcess(Integer i) {
-            this.i = i;
-        }
-
-        @Override
-        public Integer call() throws Exception {
-           if(i%2==0){
-               return i;
-           }else{
-               return 1000;
-           }
-        }
-    }
 }
